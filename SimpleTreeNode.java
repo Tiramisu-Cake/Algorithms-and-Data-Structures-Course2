@@ -108,7 +108,7 @@ class SimpleTree<T>
         if (this.Root == null) {
             return 0;
         }
-        if (this.Root.Children == null || this.Root.Children.size() == 0) {
+        if (this.Root.Children == null) {
             return leaves + 1;
         }
         for (SimpleTreeNode Child : this.Root.Children) {
