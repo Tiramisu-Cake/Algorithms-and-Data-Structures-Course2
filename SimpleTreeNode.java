@@ -40,6 +40,9 @@ class SimpleTree<T>
     public void DeleteNode(SimpleTreeNode<T> NodeToDelete)
     {
         NodeToDelete.Parent.Children.remove(NodeToDelete);
+        if (NodeToDelete.Parent.Children.isEmpty()) {
+            NodeToDelete.Parent.Children = null;
+        }
         NodeToDelete.Parent = null;
         // ваш код удаления существующего узла NodeToDelete
     }
@@ -105,7 +108,7 @@ class SimpleTree<T>
         if (this.Root == null) {
             return 0;
         }
-        if (this.Root.Children == null) {
+        if (this.Root.Children == null || this.Root.Children.size() == 0) {
             return leaves + 1;
         }
         for (SimpleTreeNode Child : this.Root.Children) {
