@@ -53,9 +53,29 @@ class SimpleTreeTest {
             Tree3.AddChild(Tree3.Root, Nodes[i]);
         }
 
+        // снова заводим узлы
+        Nodes = new SimpleTreeNode[n];
+        for (int i = 0; i < n; i++) {
+            Nodes[i] = new SimpleTreeNode<>(i,null);
+        }
+        // Дерево с 5 листами
+        int Tree4leaves = 5;
+        SimpleTree<Integer> Tree4 = new SimpleTree<>(Nodes[0]);
+        Tree3.AddChild(Tree4.Root, Nodes[1]);
+        Tree3.AddChild(Tree4.Root, Nodes[2]);
+        Tree3.AddChild(Nodes[2], Nodes[3]);
+        Tree3.AddChild(Nodes[2], Nodes[4]);
+        Tree3.AddChild(Nodes[4], Nodes[5]);
+        Tree3.AddChild(Nodes[5], Nodes[6]);
+        Tree3.AddChild(Nodes[6], Nodes[7]);
+        Tree3.AddChild(Nodes[6], Nodes[8]);
+        Tree3.AddChild(Nodes[6], Nodes[9]);
+
+
         Assert.assertTrue(Tree1leaves == Tree1.LeafCount());
         Assert.assertTrue(Tree2leaves == Tree2.LeafCount());
         Assert.assertTrue(Tree3leaves == Tree3.LeafCount());
+        Assert.assertTrue(Tree4leaves == Tree4.LeafCount());
 
     }
 }
