@@ -79,8 +79,9 @@ class SimpleTree<T>
 
     public void MoveNode(SimpleTreeNode<T> OriginalNode, SimpleTreeNode<T> NewParent)
     {
-        this.AddChild(NewParent,OriginalNode);
         this.DeleteNode(OriginalNode);
+        this.AddChild(NewParent,OriginalNode);
+
         // ваш код перемещения узла вместе с его поддеревом --
         // в качестве дочернего для узла NewParent
     }
