@@ -110,9 +110,12 @@ class SimpleTree<T>
         }
         if (this.Root.Children == null) {
             return 1;
+<<<<<<< HEAD
         }
         if (this.Root.Children.isEmpty()) {
             return 1;
+=======
+>>>>>>> c3e976b8daf215e9cabfeef5ef2cfad8a0111fc9
         }
         for (SimpleTreeNode Child : this.Root.Children) {
             SimpleTree<T> childSubTree = new SimpleTree(Child);
