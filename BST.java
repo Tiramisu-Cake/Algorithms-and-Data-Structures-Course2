@@ -282,17 +282,13 @@ class BST<T>
             return 0;
         }
 
-        int count = 0;
-        if (this.Root.LeftChild != null) {
-            count++;
-            BST<T> leftSubTree = new BST<T>(this.Root.LeftChild);
-            count += leftSubTree.Count();
-        }
-        if (this.Root.RightChild != null) {
-            count++;
-            BST<T> rightSubTree = new BST<T>(this.Root.RightChild);
-            count += rightSubTree.Count();
-        }
+        int count = 1;
+        BST<T> leftSubTree = new BST<T>(this.Root.LeftChild);
+        count += leftSubTree.Count();
+
+        BST<T> rightSubTree = new BST<T>(this.Root.RightChild);
+        count += rightSubTree.Count();
+        
         return count; // количество узлов в дереве
     }
 
