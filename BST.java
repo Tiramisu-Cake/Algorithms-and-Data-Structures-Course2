@@ -40,10 +40,7 @@ class BSTNode<T>
     }
 
     public boolean hasOneChild() {
-        if (this.isLeaf()) {
-            return false;
-        }
-        if (this.RightChild == null || this.LeftChild == null) {
+        if (this.RightChild == null ^ this.LeftChild == null) {
             return true;
         }
         return false;
@@ -190,33 +187,51 @@ class BST<T>
 
     private boolean DeleteNodeWithChildren(BSTNode<T> Node, boolean isRoot) {
         BSTNode<T> Parent = Node.Parent;
-        BSTNode<T> newNode = Node.RightChild;
-        newNode = this.LastChild(newNode, true);
+        BSTNode<T> replacementNode = this.LastChild(Node.RightChild, true);
+        int caseNum = 0;
 
-        if (newNode.isLeaf()) {
-            newNode.Parent = Parent;
-            newNode.RightChild = Node.RightChild;
-            newNode.LeftChild = Node.LeftChild;
+        if (replacementNode.isLeft() && replacementNode.isLeaf()) {
+            caseNum = 1;
+        }
 
-            if (!isRoot) {
-                if (Node.isLeft()) {
-                    Parent.LeftChild = newNode;
-                } else {
-                    Parent.RightChild = newNode;
-                }
-                return true;
+        if (!replacementNode.isLeft() && replacementNode.isLeaf()) {
+            caseNum = 2;
+        }
+
+        if (replacementNode.hasOneChild()) {
+            caseNum = 3;
+        }
+
+        switch (caseNum) {
+            case 1:
+                replacementNode.Parent.LeftChild = null;
+                replacementNode.Parent = Parent;
+                replacementNode.RightChild = Node.RightChild;
+                replacementNode.LeftChild = Node.LeftChild;
+                break;
+            case 2:
+                replacementNode.Parent = Parent;
+                replacementNode.LeftChild = Node.LeftChild;
+                break;
+            case 3:
+                replacementNode.Parent.RightChild = replacementNode.RightChild;
+                replacementNode.RightChild.Parent = replacementNode.Parent;
+                replacementNode.Parent = Parent;
+        }
+
+        if (!isRoot) {
+            if (Node.isLeft()) {
+                Parent.LeftChild = replacementNode;
+            } else {
+                Parent.RightChild = replacementNode;
             }
         }
-
-        newNode.RightChild.Parent = newNode.Parent;
-        if (newNode.isLeft()) {
-            newNode.Parent.LeftChild = newNode.RightChild;
-        } else {
-            newNode.Parent.RightChild = newNode.RightChild;
+        if (isRoot) {
+            this.Root = replacementNode;
         }
-        newNode.Parent = Parent;
-        newNode.RightChild = Node.RightChild;
-        newNode.LeftChild = Node.LeftChild;
+        Node.Parent = null;
+        Node.LeftChild = null;
+        Node.RightChild = null;
 
         return true;
     }
@@ -247,7 +262,7 @@ class BST<T>
         BSTNode<T> Node = Finder.Node;
 
         if (Node.Parent == null) {
-            this.DeleteRoot(Node);
+            return this.DeleteRoot(Node);
         }
 
         BSTNode<T> Parent = Node.Parent;
@@ -258,6 +273,7 @@ class BST<T>
             } else {
                 Parent.RightChild = null;
             }
+            Node.Parent = null;
             return true;
         }
 
@@ -278,6 +294,7 @@ class BST<T>
 
     public int Count()
     {
+        // количество узлов в дереве
         if (this.Root == null) {
             return 0;
         }
@@ -288,8 +305,8 @@ class BST<T>
 
         BST<T> rightSubTree = new BST<T>(this.Root.RightChild);
         count += rightSubTree.Count();
-        
-        return count; // количество узлов в дереве
+
+        return count;
     }
 
 }
