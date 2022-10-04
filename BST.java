@@ -22,10 +22,7 @@ class BSTNode<T>
     }
 
     public boolean isLeaf() {
-        if (this.RightChild == null && this.LeftChild == null) {
-            return true;
-        }
-        return false;
+        return this.RightChild == null && this.LeftChild == null;
     }
 
     public boolean isLeft() throws NullPointerException {
@@ -36,7 +33,7 @@ class BSTNode<T>
         if (Parent.RightChild.NodeKey == this.NodeKey) {
             return false;
         }
-        return true;
+        return Parent.LeftChild.NodeKey == this.NodeKey;
     }
 
     public boolean hasOneChild() {
@@ -299,14 +296,72 @@ class BST<T>
             return 0;
         }
 
-        int count = 1;
-        BST<T> leftSubTree = new BST<T>(this.Root.LeftChild);
-        count += leftSubTree.Count();
-
-        BST<T> rightSubTree = new BST<T>(this.Root.RightChild);
-        count += rightSubTree.Count();
-
-        return count;
+        return 1 + new BST<T>(this.Root.LeftChild).Count() + new BST<T>(this.Root.RightChild).Count();
     }
 
+    private void deepPreorder(ArrayList<BSTNode> result) {
+        if (this.Root == null) {
+            return;
+        }
+
+        result.add(this.Root);
+        new BST(this.Root.LeftChild).deepPreorder(result);
+        new BST(this.Root.RightChild).deepPreorder(result);
+
+    }
+    private void deepInorder(ArrayList<BSTNode> result) {
+        if (this.Root == null) {
+            return;
+        }
+
+        new BST(this.Root.LeftChild).deepInorder(result);
+        result.add(this.Root);
+        new BST(this.Root.RightChild).deepInorder(result);
+
+    }
+    private void deepPostorder(ArrayList<BSTNode> result) {
+        if (this.Root == null) {
+            return;
+        }
+
+        new BST(this.Root.LeftChild).deepPostorder(result);
+        new BST(this.Root.RightChild).deepPostorder(result);
+        result.add(this.Root);
+
+    }
+
+    public ArrayList<BSTNode> DeepAllNodes(int order) {
+        ArrayList<BSTNode> result = new ArrayList<BSTNode>();
+
+        switch (order) {
+            case 0: this.deepInorder(result);
+            break;
+            case 1: this.deepPostorder(result);
+            break;
+            case 2: this.deepPreorder(result);
+        }
+
+        return result;
+    }
+
+    public ArrayList<BSTNode> WideAllNodes() {
+        Queue<BSTNode> Nodes = new LinkedList<BSTNode>();
+        if (this.Root != null) {
+            Nodes.add(this.Root);
+        }
+
+        ArrayList<BSTNode> result = new ArrayList<BSTNode>();
+        while (!Nodes.isEmpty()) {
+            BSTNode currentNode = Nodes.poll();
+            result.add(currentNode);
+            if (currentNode.LeftChild != null) {
+                Nodes.add(currentNode.LeftChild);
+            }
+            if (currentNode.RightChild != null) {
+                Nodes.add(currentNode.RightChild);
+            }
+        }
+
+        return result;
+    }
 }
