@@ -52,6 +52,7 @@ public class aBST
                 Tree[-index] = key;
                 return -index;
             }
+            return Math.abs(index);
         }
 
         return -1;
