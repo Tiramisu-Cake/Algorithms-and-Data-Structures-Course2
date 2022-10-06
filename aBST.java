@@ -50,7 +50,6 @@ public class aBST
         if (index != null) {
             if (index < 0) {
                 Tree[-index] = key;
-                return -index;
             }
             return Math.abs(index);
         }
