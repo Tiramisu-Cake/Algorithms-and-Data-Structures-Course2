@@ -9,12 +9,13 @@ class BalancedBST
     {
         Root = null;
     }
-    
+
     public BSTNode putSubTrees(int[] a, int begin, int end, BSTNode Parent, int level) {
         if (begin > end) {
             return null;
         }
-        int newNodeIndex = (begin+end)/2;
+        double Index = begin + end;
+        int newNodeIndex = (int) Math.round(Index/2);
         BSTNode nextNode = new BSTNode(a[newNodeIndex], Parent);
         nextNode.Level = level;
         nextNode.LeftChild = putSubTrees(a, begin, newNodeIndex-1, nextNode, level+1);
