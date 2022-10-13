@@ -42,7 +42,7 @@ class BalancedBST
         }
 
         if (root_node.hasOneChild()) {
-            return IsBalanced(root_node.getTheOnlyChild());
+            return root_node.getTheOnlyChild().isLeaf();
         }
 
         if (root_node.LeftChild.isLeaf() && root_node.RightChild.isLeaf()) {
