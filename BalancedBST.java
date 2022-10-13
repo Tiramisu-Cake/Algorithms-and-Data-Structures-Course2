@@ -10,27 +10,28 @@ class BalancedBST
         Root = null;
     }
 
-    public BSTNode putSubTrees(int[] a, int begin, int end, BSTNode Parent, int level) {
+    public BSTNode putSubTrees(int[] aSorted, int begin, int end, BSTNode Parent, int level) {
         if (begin > end) {
             return null;
         }
-        double Index = begin + end;
-        int newNodeIndex = (int) Math.round(Index/2);
-        BSTNode nextNode = new BSTNode(a[newNodeIndex], Parent);
-        nextNode.Level = level;
-        nextNode.LeftChild = putSubTrees(a, begin, newNodeIndex-1, nextNode, level+1);
-        nextNode.RightChild = putSubTrees(a,newNodeIndex + 1, end, nextNode, level+1);
 
-        return nextNode;
+        int newNodeIndex = (begin + end)/2;
+        BSTNode newNode = new BSTNode(aSorted[newNodeIndex], Parent);
+        newNode.Level = level;
+        newNode.LeftChild = putSubTrees(aSorted, begin, newNodeIndex-1, newNode, level+1);
+        newNode.RightChild = putSubTrees(aSorted,newNodeIndex + 1, end, newNode, level+1);
+
+        return newNode;
     }
+
 
     public void GenerateTree(int[] a)
     {
         // создаём дерево с нуля из неотсортированного массива a
         int[] aSorted = a.clone();
         Arrays.sort(aSorted);
-
-        this.Root = this.putSubTrees(a,0,a.length - 1, null, 0);
+        
+        this.Root = this.putSubTrees(aSorted,0,a.length - 1, null, 0);
     }
 
     public boolean IsBalanced(BSTNode root_node)
