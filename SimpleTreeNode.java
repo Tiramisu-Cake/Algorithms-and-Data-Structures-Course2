@@ -189,14 +189,7 @@ class SimpleTree<T>
         return treeClone;
     }
 
-    public ArrayList<T> EvenTreesEven() {
-        if (this.Count() % 2 == 0) {
-            return this.EvenTrees();
-        }
-        return new ArrayList<>();
-    }
-
-    public ArrayList<T> EvenTrees() {
+    private ArrayList<T> getCutsForEvenTrees() {
         if (this.Root == null) {
             return new ArrayList<T>();
         }
@@ -209,14 +202,14 @@ class SimpleTree<T>
         ArrayList<T> result = new ArrayList<T>();
 
         for (SimpleTreeNode<T> Child : TreeCopy.Root.Children) {
-            result.addAll(new SimpleTree<T>(Child).EvenTrees());
+            result.addAll(new SimpleTree<T>(Child).getCutsForEvenTrees());
         }
 
         int leavesNum = TreeCopy.LeafCount();
         boolean firstConditionToAdd = leavesNum == TreeCopy.Count()-1 && leavesNum % 2 == 1;
         boolean secondConditionToAdd = TreeCopy.Count() % leavesNum == 0 && leavesNum % 2 == 0;
         boolean thirdConditionToAdd = TreeCopy.Count() % 2 == 0 && leavesNum % 2 == 0;
-        
+
         if (firstConditionToAdd || secondConditionToAdd || thirdConditionToAdd) {
             if (TreeCopy.Root.Parent != null) {
                 result.add(TreeCopy.Root.Parent.NodeValue);
@@ -228,5 +221,13 @@ class SimpleTree<T>
         }
 
         return result;
+    }
+
+    public ArrayList<T> EvenTrees() {
+        if (this.Count() % 2 == 0) {
+            return this.getCutsForEvenTrees();
+        }
+        return new ArrayList<>();
+
     }
 }
