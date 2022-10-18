@@ -5,9 +5,11 @@ import java.util.*;
 class Vertex
 {
     public int Value;
+    public boolean Hit;
     public Vertex(int val)
     {
         Value = val;
+        Hit = false;
     }
 }
 
@@ -29,7 +31,7 @@ class SimpleGraph
         // ваш код добавления новой вершины
         // с значением value
         // в незанятую позицию vertex
-        
+
         for (int i = 0; i < max_vertex; i++) {
             if (vertex[i] == null) {
                 vertex[i] = new Vertex(value);
@@ -71,5 +73,53 @@ class SimpleGraph
         // удаление ребра между вершинами v1 и v2
         m_adjacency[v1][v2] = 0;
         m_adjacency[v2][v1] = 0;
+    }
+
+    public int getVertexIndex(Vertex vertex) {
+        for (int i = 0; i < max_vertex; i++) {
+            if (this.vertex[i] == vertex) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private void DFS(int VFrom, int VTo, Stack<Vertex> path) {
+        this.vertex[VFrom].Hit = true;
+        path.push(this.vertex[VFrom]);
+
+        if (this.IsEdge(VFrom,VTo)) {
+            path.push(vertex[VTo]);
+            return;
+        }
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (this.IsEdge(VFrom,i) && vertex[i].Hit == false) {
+                this.DFS(i,VTo,path);
+            }
+        }
+
+        path.pop();
+        if (path.isEmpty()) {
+            return;
+        }
+
+        this.DFS(getVertexIndex(path.peek()),VTo,path);
+    }
+
+    public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo)
+    {
+        // Узлы задаются позициями в списке vertex.
+        // Возвращается список узлов -- путь из VFrom в VTo.
+        // Список пустой, если пути нету.
+
+        for (int i = 0; i < max_vertex; i++) {
+            this.vertex[i].Hit = false;
+        }
+
+        Stack<Vertex> path = new Stack<Vertex>();
+        this.DFS(VFrom, VTo, path);
+        return new ArrayList<Vertex>(path);
+
     }
 }
