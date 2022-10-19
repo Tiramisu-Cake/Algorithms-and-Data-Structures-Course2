@@ -104,7 +104,7 @@ class SimpleGraph
             return;
         }
 
-        this.DFS(getVertexIndex(path.peek()),VTo,path);
+        this.DFS(getVertexIndex(path.pop()),VTo,path);
     }
 
     public ArrayList<Vertex> DepthFirstSearch(int VFrom, int VTo)
