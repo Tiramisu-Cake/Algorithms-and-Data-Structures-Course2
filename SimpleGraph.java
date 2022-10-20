@@ -96,6 +96,7 @@ class SimpleGraph
         for (int i = 0; i < max_vertex; i++) {
             if (this.IsEdge(VFrom,i) && vertex[i].Hit == false) {
                 this.DFS(i,VTo,path);
+                return;
             }
         }
 
