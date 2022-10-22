@@ -121,6 +121,57 @@ class SimpleGraph
         Stack<Vertex> path = new Stack<Vertex>();
         this.DFS(VFrom, VTo, path);
         return new ArrayList<Vertex>(path);
+    }
 
+    private void BFS(int VFrom, int VTo, Queue<Vertex> pathQueue, Integer [] paths) {
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (this.IsEdge(VFrom,i) && vertex[i].Hit == false) {
+                this.vertex[i].Hit = true;
+                pathQueue.add(this.vertex[i]);
+                paths[i] = VFrom;
+                if (i == VTo) {
+                    return;
+                }
+            }
+        }
+
+        if (pathQueue.isEmpty()) {
+            return;
+        }
+
+        this.BFS(this.getVertexIndex(pathQueue.poll()),VTo,pathQueue, paths);
+
+    }
+
+    public ArrayList<Vertex> BreadthFirstSearch(int VFrom, int VTo)
+    {
+        // Узлы задаются позициями в списке vertex.
+        // Возвращается список узлов -- путь из VFrom в VTo.
+        // Список пустой, если пути нету.
+        for (int i = 0; i < max_vertex; i++) {
+            this.vertex[i].Hit = false;
+        }
+
+        Queue<Vertex> pathQueue = new LinkedList<>();
+        Integer [] paths = new Integer[max_vertex];
+        this.vertex[VFrom].Hit = true;
+
+        this.BFS(VFrom, VTo, pathQueue, paths);
+
+        if (paths[VTo] == null) {
+            return new ArrayList<Vertex>();
+        }
+
+        ArrayList<Vertex> result = new ArrayList<Vertex>();
+        result.add(this.vertex[VTo]);
+        int i = VTo;
+        do {
+            i = paths[i];
+            result.add(this.vertex[i]);
+        } while (i != VFrom);
+
+        Collections.reverse(result);
+        return result;
     }
 }
