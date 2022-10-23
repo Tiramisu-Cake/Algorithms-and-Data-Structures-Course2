@@ -174,4 +174,56 @@ class SimpleGraph
         Collections.reverse(result);
         return result;
     }
+
+    private ArrayList<Integer> getNeighbours (Integer vIndex) {
+        ArrayList<Integer> neighbours = new ArrayList<Integer>();
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (this.IsEdge(vIndex,i)) {
+                neighbours.add(i);
+            }
+        }
+
+        neighbours.remove(vIndex);
+
+        return neighbours;
+    }
+
+
+    private boolean checkForTriangle(int vIndex) {
+        ArrayList<Integer> neighbours = this.getNeighbours(vIndex);
+
+        for (int i : neighbours) {
+            for (int j : neighbours) {
+                if (this.IsEdge(i,j) && i != j) {
+                    this.vertex[vIndex].Hit = true;
+                    this.vertex[i].Hit = true;
+                    this.vertex[j].Hit = true;
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public ArrayList<Vertex> WeakVertices()
+    {
+        // возвращает список узлов вне треугольников
+        for (int i = 0; i < max_vertex; i++) {
+            this.vertex[i].Hit = false;
+        }
+
+        ArrayList<Vertex> result = new ArrayList<Vertex>();
+
+        for (int i = 0; i < max_vertex; i++) {
+            if (this.vertex[i].Hit == false) {
+                if(!this.checkForTriangle(i)){
+                    result.add(this.vertex[i]);
+                }
+            }
+        }
+
+        return result;
+    }
 }
